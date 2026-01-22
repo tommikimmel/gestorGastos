@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { Home, ArrowDown, ArrowUp, Wallet, Tag, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
+import { Home, ArrowDown, ArrowUp, Wallet, Tag, ChevronLeft, ChevronRight, Shield, LogOut } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: Home, end: true },
@@ -13,6 +14,16 @@ const linkBaseClasses =
   'flex items-center rounded-md text-sm font-medium transition-all duration-200'
 
 export default function Sidebar({ isOpen, onToggle }) {
+  const { logout, user } = useAuth()
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error)
+    }
+  }
+
   return (
     <aside
       className={`
@@ -88,6 +99,29 @@ export default function Sidebar({ isOpen, onToggle }) {
             </NavLink>
           ))}
         </nav>
+
+        {/* User Info & Logout */}
+        <div className="mt-4 flex-shrink-0 px-2 space-y-2">
+          {isOpen && user && (
+            <div className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-800">
+              <p className="text-xs text-slate-500 mb-1">Sesión iniciada como:</p>
+              <p className="text-sm text-slate-300 truncate">{user.email}</p>
+            </div>
+          )}
+          
+          <button
+            type="button"
+            onClick={handleLogout}
+            className={`${linkBaseClasses} ${
+              isOpen
+                ? 'w-full justify-start px-3 py-3 gap-3'
+                : 'h-12 w-12 mx-auto justify-center gap-0'
+            } text-red-400 hover:bg-red-500/10 hover:text-red-300 border border-slate-800 hover:border-red-500/30`}
+          >
+            <LogOut className={isOpen ? 'h-4 w-4' : 'h-5 w-5'} />
+            {isOpen && <span>Cerrar sesión</span>}
+          </button>
+        </div>
 
         <div className="mt-4 flex-shrink-0 px-3 md:hidden">
           <button

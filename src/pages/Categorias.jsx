@@ -38,12 +38,7 @@ import {
   Fuel,
   Building2,
 } from "lucide-react"
-import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-} from "../service/categories"
+import { useUserServices } from "../hooks/useUserServices"
 
 const ICON_OPTIONS = [
   // Compras / vida diaria
@@ -110,6 +105,8 @@ const getIconLabel = (value) =>
   ICON_OPTIONS.find((opt) => opt.value === value)?.label || "Sin icono"
 
 export default function Categorias() {
+  const { getCategories, createCategory, updateCategory, deleteCategory } = useUserServices()
+  
   const [nombre, setNombre] = useState("")
   const [icono, setIcono] = useState("")
   const [color, setColor] = useState("#22c55e")

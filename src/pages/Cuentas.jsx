@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { Wallet, Plus, Trash, Pencil } from "lucide-react"
-import { createAccount, getAccounts, deleteAccount, updateAccount } from "../service/account"
+import { useUserServices } from "../hooks/useUserServices"
 import { formatAmount } from "../utils/formatAmount"
 
 export default function Cuentas() {
+    const { getAccounts, createAccount, deleteAccount, updateAccount } = useUserServices()
 
     const [nombre, setNombre] = useState('');
     const [total, setTotal] = useState('');

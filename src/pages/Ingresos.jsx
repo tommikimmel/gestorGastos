@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { ArrowDown, Plus, Pencil, Trash, Briefcase, Gift, Coins, PiggyBank } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { getAccounts } from "../service/account"
-import { createIngreso, getIngresos, updateIngreso, deleteIngreso } from "../service/transactions"
+import { useUserServices } from "../hooks/useUserServices"
 import { formatAmount } from "../utils/formatAmount"
 
 const INCOME_CATEGORIES = [
@@ -18,6 +17,8 @@ const INCOME_CATEGORY_META = INCOME_CATEGORIES.reduce((acc, cat) => {
 }, {})
 
 export default function Ingresos() {
+  const { getAccounts, getIngresos, createIngreso, updateIngreso, deleteIngreso } = useUserServices()
+  
   const [monto, setMonto] = useState("")
   const [cuentaId, setCuentaId] = useState("")
   const [categoriaIngreso, setCategoriaIngreso] = useState("SALARIOS")

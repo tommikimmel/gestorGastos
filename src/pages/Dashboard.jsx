@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Pie } from "react-chartjs-2"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { ArrowDown, ArrowUp } from "lucide-react"
-import { getIngresos, getGastos } from "../service/transactions"
-import { getCategories } from "../service/categories"
+import { useUserServices } from "../hooks/useUserServices"
 import { formatAmount } from "../utils/formatAmount"
 
 ChartJS.register(ArcElement, Tooltip, Legend)
@@ -21,6 +20,8 @@ const INCOME_CATEGORY_META = INCOME_CATEGORIES.reduce((acc, cat) => {
 }, {})
 
 export default function Dashboard() {
+  const { getIngresos, getGastos, getCategories } = useUserServices()
+  
   const [selectedType, setSelectedType] = useState("GASTOS") // "GASTOS" | "INGRESOS"
   const [ingresos, setIngresos] = useState([])
   const [gastos, setGastos] = useState([])

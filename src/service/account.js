@@ -1,21 +1,23 @@
-import {collection, addDoc, doc, updateDoc, deleteDoc, getDocs} from 'firebase/firestore';
+import {collection, addDoc, doc, updateDoc, deleteDoc, getDocs, query, where} from 'firebase/firestore';
 import {db} from '../firebase/config.js';
 
 const accountRef = collection(db, 'accounts');
 
-export const getAccounts = async () => {
-    const snapshot = await getDocs(accountRef);
+export const getAccounts = async (userId) => {
+    const q = query(accountRef, where('userId', '==', userId));
+    const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
     }));
 }
 
-export const createAccount = async ({nombre, total}) => {
+export const createAccount = async ({nombre, total, userId}) => {
     return await addDoc(accountRef,
         {
             nombre,
-            total: Number(total)
+            total: Number(total),
+            userId,
         }
     )
 }

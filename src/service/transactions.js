@@ -3,7 +3,7 @@ import { db } from '../firebase/config.js'
 
 const transactionRef = collection(db, 'transactions')
 
-export const createIngreso = async ({ monto, cuentaId, fecha, descripcion, categoriaIngreso }) => {
+export const createIngreso = async ({ monto, cuentaId, fecha, descripcion, categoriaIngreso, userId }) => {
     const numericMonto = Number(monto)
 
     await addDoc(transactionRef, {
@@ -13,6 +13,7 @@ export const createIngreso = async ({ monto, cuentaId, fecha, descripcion, categ
         fecha,
         descripcion: descripcion || '',
         categoriaIngreso: categoriaIngreso || 'OTROS',
+        userId,
     })
 
     if (cuentaId) {
@@ -23,8 +24,12 @@ export const createIngreso = async ({ monto, cuentaId, fecha, descripcion, categ
     }
 }
 
-export const getIngresos = async () => {
-    const q = query(transactionRef, where('tipo', '==', 'INGRESO'))
+export const getIngresos = async (userId) => {
+    const q = query(
+        transactionRef, 
+        where('tipo', '==', 'INGRESO'),
+        where('userId', '==', userId)
+    )
     const snapshot = await getDocs(q)
 
     return snapshot.docs.map((docSnap) => ({
@@ -96,7 +101,7 @@ export const deleteIngreso = async (id) => {
 
 // --- Gastos ---
 
-export const createGasto = async ({ monto, cuentaId, categoriaId, fecha, descripcion }) => {
+export const createGasto = async ({ monto, cuentaId, categoriaId, fecha, descripcion, userId }) => {
     const numericMonto = Number(monto)
 
     if (!cuentaId || !categoriaId) {
@@ -123,6 +128,7 @@ export const createGasto = async ({ monto, cuentaId, categoriaId, fecha, descrip
         categoriaId,
         fecha,
         descripcion: descripcion || '',
+        userId,
     })
 
     await updateDoc(accountRef, {
@@ -130,8 +136,12 @@ export const createGasto = async ({ monto, cuentaId, categoriaId, fecha, descrip
     })
 }
 
-export const getGastos = async () => {
-    const q = query(transactionRef, where('tipo', '==', 'GASTO'))
+export const getGastos = async (userId) => {
+    const q = query(
+        transactionRef, 
+        where('tipo', '==', 'GASTO'),
+        where('userId', '==', userId)
+    )
     const snapshot = await getDocs(q)
 
     return snapshot.docs.map((docSnap) => ({

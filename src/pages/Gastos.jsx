@@ -38,9 +38,7 @@ import {
   Building2,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { getAccounts } from "../service/account"
-import { getCategories } from "../service/categories"
-import { createGasto, getGastos, updateGasto, deleteGasto } from "../service/transactions"
+import { useUserServices } from "../hooks/useUserServices"
 import { formatAmount } from "../utils/formatAmount"
 
 const ICON_COMPONENTS = {
@@ -79,6 +77,8 @@ const ICON_COMPONENTS = {
 }
 
 export default function Gastos() {
+  const { getAccounts, getCategories, getGastos, createGasto, updateGasto, deleteGasto } = useUserServices()
+  
   const [monto, setMonto] = useState("")
   const [cuentaId, setCuentaId] = useState("")
   const [categoriaId, setCategoriaId] = useState("")
