@@ -25,16 +25,32 @@ export default function Sidebar({ isOpen, onToggle }) {
   }
 
   return (
-    <aside
-      className={`
-        fixed inset-y-0 left-0 z-40 h-screen w-72 bg-slate-950 border-r border-slate-800 transform transition-all duration-200 ease-out
-        md:static md:translate-x-0 md:h-screen
-        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        ${isOpen ? 'md:w-64' : 'md:w-20'}
-      `}
-    >
-      <div className="flex h-full flex-col pt-4 pb-6">
-        <div className="px-3 mb-6 flex-shrink-0">
+    <>
+      {/* Botón de cerrar para móvil (fuera del sidebar) */}
+      <button
+        type="button"
+        onClick={onToggle}
+        className={`
+          fixed top-4 left-[288px] z-50 md:hidden
+          h-10 w-10 items-center justify-center rounded-full
+          bg-slate-900 border border-slate-700 text-slate-200
+          hover:bg-slate-800 transition-all duration-200
+          ${isOpen ? 'flex' : 'hidden'}
+        `}
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-40 h-screen w-72 bg-slate-950 border-r border-slate-800 transform transition-all duration-200 ease-out
+          md:static md:translate-x-0 md:h-screen
+          ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          ${isOpen ? 'md:w-64' : 'md:w-20'}
+        `}
+      >
+        <div className="flex h-full flex-col pt-4 pb-6">
+          <div className="px-3 mb-6 flex-shrink-0">
           {isOpen ? (
             <div className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-2 shadow-sm">
               <div className="flex items-center gap-3">
@@ -122,18 +138,8 @@ export default function Sidebar({ isOpen, onToggle }) {
             {isOpen && <span>Cerrar sesión</span>}
           </button>
         </div>
-
-        <div className="mt-4 flex-shrink-0 px-3 md:hidden">
-          <button
-            type="button"
-            onClick={onToggle}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-slate-900 px-4 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-800 border border-slate-700"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span>Cerrar menú</span>
-          </button>
-        </div>
       </div>
     </aside>
+    </>
   )
 }
